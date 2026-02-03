@@ -1,0 +1,122 @@
+{
+    "recipes": [
+        {
+            "name": "Mojito",
+            "ingredients": [
+                {
+                    "item": "White rum",
+                    "amount": "2 oz"
+                },
+                {
+                    "item": "Mint leaves",
+                    "amount": "6"
+                },
+                {
+                    "item": "Lime juice",
+                    "amount": "1 oz"
+                },
+                {
+                    "item": "Sugar",
+                    "amount": "2 tsp"
+                },
+                {
+                    "item": "Soda water",
+                    "amount": "Top up"
+                }
+            ],
+            "instructions": "Muddle mint and sugar, add rum and lime juice, top with soda.",
+            "colors": [
+                "green"
+            ],
+            "tags": [
+                "refreshing",
+                "classic"
+            ]
+        },
+        {
+            "name": "Old Fashioned",
+            "ingredients": [
+                {
+                    "item": "Bourbon or Rye whiskey",
+                    "amount": "2 oz"
+                },
+                {
+                    "item": "Sugar cube",
+                    "amount": "1"
+                },
+                {
+                    "item": "Angostura bitters",
+                    "amount": "2 dashes"
+                },
+                {
+                    "item": "Orange twist",
+                    "amount": "1"
+                }
+            ],
+            "instructions": "Muddle sugar and bitters, add whiskey, stir with ice, garnish with orange.",
+            "color": [
+                "amber"
+            ],
+            "tags": [
+                "classic",
+                "strong"
+            ]
+        },
+        {
+            "name": "Margarita",
+            "ingredients": [
+                {
+                    "item": "Tequila",
+                    "amount": "2 oz"
+                },
+                {
+                    "item": "Triple sec",
+                    "amount": "1 oz"
+                },
+                {
+                    "item": "Lime juice",
+                    "amount": "1 oz"
+                },
+                {
+                    "item": "Salt",
+                    "amount": "rim the glass"
+                }
+            ],
+            "instructions": "Shake tequila, triple sec, and lime juice with ice. Strain into glass with salted rim.",
+            "color": [
+                "yellow"
+            ],
+            "tags": [
+                "citrus",
+                "classic",
+                "strong"
+            ]
+        },
+        {
+            "name": "Lemon Drop",
+            "ingredients": [
+                {
+                    "item": "Vodka",
+                    "amount": "2 oz"
+                },
+                {
+                    "item": "Triple sec",
+                    "amount": "1 oz"
+                },
+                {
+                    "item": "Lemon juice",
+                    "amount": "1 oz"
+                }
+            ],
+            "instructions": "Rim your cocktail glass with sugar. In a cocktail shaker, combine vodka, triple sec, and fresh lemon juice with ice. Shake well and strain into your prepared glass. Garnish with a lemon twist.",
+            "color": [
+                "yellow"
+            ],
+            "tags": [
+                "refreshing"
+            ]
+        }
+    ],
+    "favorites": [],
+    "version": 1
+}

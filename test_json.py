@@ -1,63 +1,84 @@
 import json
+from storage import load_user_data, save_user_data
 
-with open("recipes.json", "r") as f:
-    cocktails = json.load(f)
+user_data = load_user_data()
 
-with open("favorites.json", "r") as f:
-    favorites = json.load(f)
+cocktails = user_data["recipes"]
+favorites = user_data["favorites"]
+
+save_user_data(user_data)
 
 def search_names(search_item):
-    print(f"Cocktail with '{search_item}': ")
-    found = False
-    for drink in cocktails:
-        if search_item.lower() in drink["name"].lower():
+    search_item = search_item.strip().lower()
+    matches = [drink for drink in cocktails if search_item in drink["name"].lower()]
+
+    if matches:
+        print(f"\nCocktails matching '{search_item}':")
+        for drink in matches:
             show_recipe(drink)
-            found = True
-            break
-    if not found:
-        print(f"Not Found with '{search_item}'")
+    else:
+        print(f"\nNo cocktails found with '{search_item}'.\n")
+
 
 def search_ingredients(search_item):
-    print(f"Cocktail with '{search_item}': ")
-    found = False
+    search_item = search_item.strip().lower()
+    matches = []
+
     for drink in cocktails:
         for ingredient in drink["ingredients"]:
-            if search_item.lower() in ingredient["item"].lower():
-                show_recipe(drink)
-                found = True
-                break
-    if not found:
-        print(f"Not Found with '{search_item}'")
+            if search_item in ingredient["item"].lower():
+                matches.append(drink)
+                break  # No need to check other ingredients in this drink
+
+    if matches:
+        print(f"\nCocktails containing ingredient '{search_item}':")
+        for drink in matches:
+            show_recipe(drink)
+    else:
+        print(f"\nNo cocktails found containing '{search_item}'.\n")
+
 
 def search_colors(search_item):
-    print(f"Cocktail with '{search_item}': ")
-    found = False
+    search_item = search_item.strip().lower()
+    matches = []
+
     for drink in cocktails:
-        for color in drink["colors"]:
-            if search_item.lower() in color.lower():
-                show_recipe(drink)
-                found = True
+        for color in drink.get("colors", []):
+            if search_item in color.lower():
+                matches.append(drink)
                 break
-    if not found:
-        print(f"Not Found with '{search_item}'")
+
+    if matches:
+        print(f"\nCocktails with color '{search_item}':")
+        for drink in matches:
+            show_recipe(drink)
+    else:
+        print(f"\nNo cocktails found with color '{search_item}'.\n")
+
 
 def search_tags(search_item):
-    print(f"Cocktail with '{search_item}': ")
-    found = False
+    search_item = search_item.strip().lower()
+    matches = []
+
     for drink in cocktails:
-        for tag in drink["tags"]:
-            if search_item.lower() in tag.lower():
-                show_recipe(drink)
-                found = True
+        for tag in drink.get("tags", []):
+            if search_item in tag.lower():
+                matches.append(drink)
                 break
-    if not found:
-        print(f"Not Found with '{search_item}'")
+
+    if matches:
+        print(f"\nCocktails with tag '{search_item}':")
+        for drink in matches:
+            show_recipe(drink)
+    else:
+        print(f"\nNo cocktails found with tag '{search_item}'.\n")
+
 
 def show_recipe(drink):
     print(f"\n---{drink['name']}---")
     print(f"Colors: {', '.join(drink['colors'])}")
     print("Ingredients: ")
-    for ing in drink["ingredients"]:
+    for ing in drink['ingredients']:
         print(f"- {ing['amount']} {ing['item']}")
     print(f"Instructions: {drink['instructions']}")
     print(f"Tags: {', '.join(drink['tags'])}")
@@ -117,6 +138,35 @@ def delete_cocktail():
             print("Invalid number. Please try again.\n")
     except ValueError:
         print("Invalid input. Please enter a number.\n")
+        
+def show_favorites():
+    if not favorites:
+        print("No favorites added yet.\n")
+        return
+
+    print("\n--- Favorite Cocktails ---")
+    for i, drink in enumerate(favorites, start=1):
+        print(f"{i}. {drink['name']}")
+    print()
+    
+def remove_favorite():
+    if not favorites:
+        print("No favorites to remove.\n")
+        return
+
+    for i, drink in enumerate(favorites, start=1):
+        print(f"{i}: {drink['name']}")
+
+    try:
+        choice = int(input("\nEnter the number of the favorite cocktail to remove: "))
+        if 1 <= choice <= len(favorites):
+            removed = favorites.pop(choice - 1)
+            save_favorites()
+            print(f"'{removed['name']}' has been removed from favorites.\n")
+        else:
+            print("Invalid number. Please try again.\n")
+    except ValueError:
+        print("Invalid input. Please enter a number.\n")
 
 def update_cocktail():
     if not cocktails:
@@ -142,30 +192,30 @@ def update_cocktail():
 
             option = input("Option number: ")
             if option == "1":  # Name
-                drink["name"] = input("Enter new name: ")
+                drink['name'] = input("Enter new name: ")
             elif option == "2":  # Ingredients
                 print("Current Ingredients: ")
-                for ing in drink["ingredients"]:
+                for ing in drink['ingredients']:
                     print(f"- {ing['amount']} {ing['item']}")
-                drink["ingredients"] = []
+                drink['ingredients'] = []
                 print("Enter new ingredients (type 'done' when finished):")
                 while True:
                     item = input("New item: ")
                     if item.lower() == "done":
                         break
                     amount = input(f"Amount for {item}: ")
-                    drink["ingredients"].append({"item": item, "amount": amount})
+                    drink['ingredients'].append({"item": item, "amount": amount})
             elif option == "3":  # Colors
                 print(f"Current colors: {', '.join(drink.get('colors', []))}")
                 new_colors = input("Enter new colors (comma separated): ")
-                drink["colors"] = [color.strip() for color in new_colors.split(",")]
+                drink['colors'] = [color.strip() for color in new_colors.split(",")]
             elif option == "4":  # Tags
                 print(f"Current tags: {', '.join(drink['tags'])}")
                 new_tags = input("Enter new tags (comma separated): ")
-                drink["tags"] = [tag.strip() for tag in new_tags.split(",")]
+                drink['tags'] = [tag.strip() for tag in new_tags.split(",")]
             elif option == "5":  # Instructions
                 print(f"Current instructions: {drink['instructions']}")
-                drink["instructions"] = input("Enter new instructions: ")
+                drink['instructions'] = input("Enter new instructions: ")
             elif option == "6":  # Cancel
                 print("Update cancelled.")
                 return
@@ -189,7 +239,7 @@ def save_favorites():
 def add_favorite():
     name = input("Enter the name of the cocktail to add to favorites: ")
     for drink in cocktails:
-        if drink["name"].lower() == name.lower():
+        if drink['name'].lower() == name.lower():
             if drink not in favorites:
                 favorites.append(drink)
                 save_favorites()
@@ -219,11 +269,11 @@ def list_of_drink():
 
     print("\n--- All Cocktails ---")
     for i, drink in enumerate(drinks_to_show, start=1):
-        print(f"{i}. {drink["name"]}")
+        print(f"{i}. {drink['name']}")
     print()
 
 while True:
-    menu = "Search: \n1. Name \n2. Ingredient \n3. Colors \n4. Tag \n5. Add \n6. Delete \n7. List the drinks \n8. Quit \n"
+    menu = "Search: \n1. Name \n2. Ingredient \n3. Colors \n4. Tag \n5. Add \n6. Delete \n7. List the drinks \n8. Add to Favorites \n9. Show Favorites \n10. Remove from Favorites \n11. Quit \n"
     print(menu)
     choice = input("Enter your search option: ")
 
@@ -248,11 +298,11 @@ while True:
     elif choice == "8":
         add_favorite()
     elif choice == "9":
-        remove_favorite()
-    elif choice == "10":
         show_favorites()
+    elif choice == "10":
+        remove_favorite()
     elif choice == "11":
         print("Goodbye! 🍸")
         break
     else:
-        print("Invalid option, please try again.")
+        print("Invalid option, please try again. \n")
