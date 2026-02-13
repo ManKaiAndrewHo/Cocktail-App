@@ -1,19 +1,16 @@
-import json
+from storage import load_user_data, save_user_data
+from test_json import run_app 
 
-def load_recipes():
-    with open("recipes.json", "r") as f:
-        recipes = json.load(f)  # list of dicts
-    return recipes
+# def main(): TESTING PURPOSES ONLY
+#     user_data = load_user_data()
 
-#def search(input):
+#     # example: add a receipt
+#     user_data["receipts"].append({
+#         "store": "Target",
+#         "total": 42.17
+#     })
 
-
-def main():
-    recipes = load_recipes()
-    print("Cocktail Recipes:")
-    for recipe in recipes:
-        print(f"- {recipe['name']}")
-
+#     save_user_data(user_data)
 
 if __name__ == "__main__":
-    main()
+    run_app()
