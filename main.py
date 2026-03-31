@@ -1,6 +1,6 @@
 from storage import load_user_data, save_user_data
-from search import search_cocktails, search_ingredients, search_colors, search_names, search_tags
-from recipe import add_cocktail, delete_cocktail, show_recipe, list_of_drink, export_user_data
+from search import search_ingredients, search_colors, search_names, search_tags
+from recipe import add_cocktail, delete_cocktail, list_drinks, update_cocktail
 from favorite import add_favorite, show_favorites, remove_favorite
 
 MENU = """
@@ -50,26 +50,26 @@ def main():
             search_tags(cocktails, tag)
             
         elif choice == "5":
+            list_drinks(cocktails)
+
+        elif choice == "6":
             add_cocktail(user_data)
             
-        elif choice == "6":
-            delete_cocktail(user_data)
-            
         elif choice == "7":
-            list_of_drink(cocktails)
+            update_cocktail(user_data)
             
         elif choice == "8":
-            add_favorite(user_data)
-            
+            delete_cocktail(user_data)
+
         elif choice == "9":
-            show_favorites(user_data)
-            
+            add_favorite(user_data)
+
         elif choice == "10":
-            remove_favorite(user_data)
-            
+            show_favorites(user_data)
+
         elif choice == "11":
-            export_user_data(user_data)
-            
+            remove_favorite(user_data)
+
         elif choice == "12":
             print("Goodbye! 🍸")
             break

@@ -41,11 +41,11 @@ def search_colors(cocktails, search_item):
                 break
 
     if matches:
-        print(f"\nCocktails with color '{search_item}':")
+        print(f"\nCocktails with colors '{search_item}':")
         for drink in matches:
             show_recipe(drink)
     else:
-        print(f"\nNo cocktails found with color '{search_item}'.\n")
+        print(f"\nNo cocktails found with colors '{search_item}'.\n")
 
 
 def search_tags(cocktails, search_item):
