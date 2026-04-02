@@ -124,4 +124,77 @@ def convert_recipe(recipe, target_unit):
             })
             continue
         
+        #bare count with no unit like '6 mint leaves'
+        if unit is None:
+            results.append({
+                "item": item,
+                "original": original,
+                "converted": original,
+                "status": "skipped",
+                "note": "Count with no unit - kept as it is."
+            })
+            continue
         
+        #count like 'dish, slice' that we choose to skip
+        if unit in Skipped_Units:
+            results.append({
+                "item": item,
+                "original": original,
+                "converted": original,
+                "status": "skipped",
+                "note": f"Unit '{unit}' is not convertible - kept as it is."
+            })
+            continue
+        
+        #unknown unit - try typo correction
+        if unit not in All_Known_Units:
+            suggestion = detect_typo(unit)
+            note = (f"Unknown unit '{unit}'. Did you mean '{suggestion}'?"
+                    if suggestion else f"Unknown unit '{unit}'. No close match found.")
+            results.append({
+                "item": item,
+                "original": original,
+                "converted": original,
+                "status": "typo",
+                "note": note
+            })
+            continue
+        
+        #attempt conversion
+        try:
+            converted_num = convert_unit(number, unit, target_unit)
+            converted_str = f"{format_number(converted_num)} {target_unit}"
+            results.append({
+                "item": item,
+                "original": original,
+                "converted": converted_str,
+                "status": "converted",
+                "note": ""
+            })
+        except ValueError as e:
+            results.append({
+                "item": item,
+                "original": original,
+                "converted": original,
+                "status": "skipped",
+                "note": str(e)
+            })
+        
+    return results
+
+def display_conversion_results(recipe,target_unit):
+    """
+    Nicely print the conversion results.
+    """
+    print(f"\n--- {recipe['name']} (converted to {target_unit}) ---")
+    results = convert_recipe(recipe, target_unit)
+    
+    for r in results:
+        if r["status"] == "converted":
+            print(f"- {r['item']}: {r['original']} -> {r['converted']}")
+        elif r["status"] == "typo":
+            print(f" {r['item']}: '{r['original']}' ⚠ {r['note']}")
+        else:
+            #skipped/unparseable - show original
+            print(f" {r['item']}: '{r['original']}' (kept as original)")
+    print()

@@ -2,6 +2,7 @@ from storage import load_user_data, save_user_data
 from search import search_ingredients, search_colors, search_names, search_tags
 from recipe import add_cocktail, delete_cocktail, list_drinks, update_cocktail
 from favorite import add_favorite, show_favorites, remove_favorite
+from convert import display_conversion_results
 
 MENU = """
 ============================
@@ -21,7 +22,9 @@ MENU = """
 10. Show Favorites
 11. Remove from Favorites
 -----------------------------
-12. Quit
+12. Convert Units
+-----------------------------
+13. Quit
 """
 
 def main():
@@ -71,6 +74,15 @@ def main():
             remove_favorite(user_data)
 
         elif choice == "12":
+            name = input("Enter the name of the cocktail to convert: ")
+            target = input("Convert to unit (ml, oz, tsp, tbsp, cup, cl): ").strip().lower()
+            match = next((d for d in cocktails if d["name"].lower() == name.lower()), None)
+            if match:
+                display_conversion_results(match, target)
+            else:
+                print(f"'{name}' not found in cocktail recipes.\n")
+
+        elif choice == "13":
             print("Goodbye! 🍸")
             break
         
