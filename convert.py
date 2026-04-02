@@ -38,7 +38,7 @@ def parse_amount(amount_str):
     if not match:
         return None, None
     
-    raw_num, unit = match.groups(1), match.group(2).strip()
+    raw_num, unit = match.group(1), match.group(2).strip()
     
     #something like '1/2'
     if "/" in raw_num:
