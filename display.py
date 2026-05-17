@@ -1,6 +1,7 @@
 def show_recipe(drink):
     print(f"\n---{drink['name']}---")
-    print(f"Colors: {', '.join(drink['colors'])}")
+    colors = drink.get("colors") or drink.get("color", [])
+    print(f"Colors: {', '.join(colors)}")
     print("Ingredients: ")
     for ing in drink['ingredients']:
         print(f"- {ing['amount']} {ing['item']}")
