@@ -35,7 +35,8 @@ def search_colors(cocktails, search_item):
     matches = []
 
     for drink in cocktails:
-        for color in drink.get("colors", []):
+        colors = drink.get("colors") or drink.get("color", [])
+        for color in colors:
             if search_item in color.lower():
                 matches.append(drink)
                 break
